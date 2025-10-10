@@ -1,0 +1,65 @@
+﻿name: napphy_services
+description: AplicaciÃ³n para conectar padres con niÃ±eras y cuidadores confiables
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
+  cloud_firestore: ^4.13.6
+  firebase_messaging: ^14.7.9
+  firebase_storage: ^11.5.6
+  
+  # UI
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  image_picker: ^1.0.5
+  
+  # Maps & Location
+  google_maps_flutter: ^2.5.0
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  
+  # State Management
+  provider: ^6.1.1
+  
+  # Utils
+  intl: ^0.18.1
+  uuid: ^4.2.2
+  shared_preferences: ^2.2.2
+  
+  # Notifications
+  flutter_local_notifications: ^17.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+  
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+
+dependency_overrides:
+  flutter_local_notifications: ^17.2.2
+
+

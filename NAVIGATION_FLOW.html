@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napphy Services - Diagrama de Flujo de Navegación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #6B4EFF;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .level {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .screen {
+            background: white;
+            border: 3px solid #6B4EFF;
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(107, 78, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .screen:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(107, 78, 255, 0.4);
+        }
+
+        .screen-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .screen-title {
+            font-weight: bold;
+            color: #6B4EFF;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .screen-path {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 5px;
+            font-family: monospace;
+        }
+
+        .screen-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #6B4EFF;
+            margin: -10px auto;
+        }
+
+        .role-section {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .role-column {
+            flex: 1;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #ddd;
+        }
+
+        .role-header {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        .nanny-header {
+            border-bottom-color: #FF6B9D;
+            color: #FF6B9D;
+        }
+
+        .parent-header {
+            border-bottom-color: #6B4EFF;
+            color: #6B4EFF;
+        }
+
+        .admin-header {
+            border-bottom-color: #FFC107;
+            color: #FFC107;
+        }
+
+        .role-column .screen {
+            margin-bottom: 15px;
+            border-width: 2px;
+        }
+
+        .nanny-screen {
+            border-color: #FF6B9D;
+        }
+
+        .parent-screen {
+            border-color: #6B4EFF;
+        }
+
+        .admin-screen {
+            border-color: #FFC107;
+        }
+
+        .common-section {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #00bcd4;
+        }
+
+        .common-header {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00838f;
+            margin-bottom: 20px;
+        }
+
+        .common-screens {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .common-screen {
+            border-color: #00bcd4;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            border: 2px solid;
+        }
+
+        .nanny-color {
+            background: #FF6B9D;
+            border-color: #FF6B9D;
+        }
+
+        .parent-color {
+            background: #6B4EFF;
+            border-color: #6B4EFF;
+        }
+
+        .admin-color {
+            background: #FFC107;
+            border-color: #FFC107;
+        }
+
+        .common-color {
+            background: #00bcd4;
+            border-color: #00bcd4;
+        }
+
+        @media (max-width: 1024px) {
+            .role-section {
+                flex-direction: column;
+            }
+            
+            .common-screens {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍼 Napphy Services</h1>
+        <p class="subtitle">Diagrama de Flujo de Navegación</p>
+
+        <div class="flow-diagram">
+            <!-- Nivel 1: App Inicio -->
+            <div class="level">
+                <div class="screen">
+                    <div class="screen-icon">🌟</div>
+                    <div class="screen-title">Splash Screen</div>
+                    <div class="screen-path">/</div>
+                    <div class="screen-description">Pantalla inicial de la aplicación</div>
+                </div>
+            </div>
+
+            <div class="arrow"></div>
+
+            <!-- Nivel 2: Autenticación -->
+            <div class="level">
+                <div class="screen">
+                    <div class="screen-icon">🔐</div>
+                    <div class="screen-title">Login Screen</div>
+                    <div class="screen-path">/login</div>
+                    <div class="screen-description">Inicio de sesión con email y contraseña</div>
+                </div>
+            </div>
+
+            <div class="arrow"></div>
+
+            <!-- Nivel 3: Selección de Rol / Registro -->
+            <div class="level">
+                <div class="screen">
+                    <div class="screen-icon">👥</div>
+                    <div class="screen-title">Role Selection</div>
+                    <div class="screen-path">/role-selection</div>
+                    <div class="screen-description">Seleccionar rol (Niñera/Padre)</div>
+                </div>
+                
+                <div class="screen">
+                    <div class="screen-icon">📝</div>
+                    <div class="screen-title">Register Screen</div>
+                    <div class="screen-path">/register</div>
+                    <div class="screen-description">Registro de nuevos usuarios</div>
+                </div>
+            </div>
+
+            <div class="arrow"></div>
+
+            <!-- Nivel 4: Dashboards según Rol -->
+            <div class="role-section">
+                <!-- Columna Niñera -->
+                <div class="role-column">
+                    <div class="role-header nanny-header">👶 Niñera/Cuidador</div>
+                    
+                    <div class="screen nanny-screen">
+                        <div class="screen-icon">🏠</div>
+                        <div class="screen-title">Nanny Home</div>
+                        <div class="screen-path">/nanny/home</div>
+                        <div class="screen-description">Dashboard con contrataciones</div>
+                    </div>
+
+                    <div class="screen nanny-screen">
+                        <div class="screen-icon">👤</div>
+                        <div class="screen-title">Nanny Profile</div>
+                        <div class="screen-path">/nanny/profile</div>
+                        <div class="screen-description">Editar perfil profesional</div>
+                    </div>
+
+                    <div class="screen nanny-screen">
+                        <div class="screen-icon">📋</div>
+                        <div class="screen-title">Bookings</div>
+                        <div class="screen-description">Ver y gestionar contrataciones</div>
+                    </div>
+
+                    <div class="screen nanny-screen">
+                        <div class="screen-icon">⭐</div>
+                        <div class="screen-title">Reviews</div>
+                        <div class="screen-description">Ver calificaciones recibidas</div>
+                    </div>
+                </div>
+
+                <!-- Columna Padre -->
+                <div class="role-column">
+                    <div class="role-header parent-header">👨‍👩‍👧 Padre/Tutor</div>
+                    
+                    <div class="screen parent-screen">
+                        <div class="screen-icon">🏠</div>
+                        <div class="screen-title">Parent Home</div>
+                        <div class="screen-path">/parent/home</div>
+                        <div class="screen-description">Dashboard principal</div>
+                    </div>
+
+                    <div class="screen parent-screen">
+                        <div class="screen-icon">🔍</div>
+                        <div class="screen-title">Search Nannies</div>
+                        <div class="screen-path">/parent/search</div>
+                        <div class="screen-description">Buscar niñeras con filtros</div>
+                    </div>
+
+                    <div class="screen parent-screen">
+                        <div class="screen-icon">📄</div>
+                        <div class="screen-title">Nanny Detail</div>
+                        <div class="screen-path">/parent/nanny-detail</div>
+                        <div class="screen-description">Ver perfil completo de niñera</div>
+                    </div>
+
+                    <div class="screen parent-screen">
+                        <div class="screen-icon">📅</div>
+                        <div class="screen-title">Booking Form</div>
+                        <div class="screen-description">Crear solicitud de contratación</div>
+                    </div>
+
+                    <div class="screen parent-screen">
+                        <div class="screen-icon">📋</div>
+                        <div class="screen-title">My Bookings</div>
+                        <div class="screen-description">Ver mis contrataciones</div>
+                    </div>
+                </div>
+
+                <!-- Columna Admin -->
+                <div class="role-column">
+                    <div class="role-header admin-header">🛡️ Administrador</div>
+                    
+                    <div class="screen admin-screen">
+                        <div class="screen-icon">📊</div>
+                        <div class="screen-title">Admin Dashboard</div>
+                        <div class="screen-path">/admin/dashboard</div>
+                        <div class="screen-description">Panel de control general</div>
+                    </div>
+
+                    <div class="screen admin-screen">
+                        <div class="screen-icon">⏳</div>
+                        <div class="screen-title">Pending Nannies</div>
+                        <div class="screen-description">Aprobar/rechazar niñeras</div>
+                    </div>
+
+                    <div class="screen admin-screen">
+                        <div class="screen-icon">👥</div>
+                        <div class="screen-title">Users Management</div>
+                        <div class="screen-description">Gestionar todos los usuarios</div>
+                    </div>
+
+                    <div class="screen admin-screen">
+                        <div class="screen-icon">📈</div>
+                        <div class="screen-title">Reports</div>
+                        <div class="screen-description">Ver reportes y estadísticas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Pantallas Comunes -->
+            <div class="common-section">
+                <div class="common-header">🔄 Pantallas Comunes (Todos los Usuarios)</div>
+                <div class="common-screens">
+                    <div class="screen common-screen">
+                        <div class="screen-icon">💬</div>
+                        <div class="screen-title">Chat List</div>
+                        <div class="screen-path">/chat/list</div>
+                        <div class="screen-description">Lista de conversaciones</div>
+                    </div>
+
+                    <div class="screen common-screen">
+                        <div class="screen-icon">💭</div>
+                        <div class="screen-title">Chat Screen</div>
+                        <div class="screen-path">/chat</div>
+                        <div class="screen-description">Mensajería en tiempo real</div>
+                    </div>
+
+                    <div class="screen common-screen">
+                        <div class="screen-icon">🔔</div>
+                        <div class="screen-title">Notifications</div>
+                        <div class="screen-path">/notifications</div>
+                        <div class="screen-description">Ver notificaciones</div>
+                    </div>
+
+                    <div class="screen common-screen">
+                        <div class="screen-icon">⚙️</div>
+                        <div class="screen-title">Settings</div>
+                        <div class="screen-path">/settings</div>
+                        <div class="screen-description">Configuración de la app</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leyenda -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color nanny-color"></div>
+                    <span><strong>Niñera/Cuidador</strong></span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color parent-color"></div>
+                    <span><strong>Padre/Tutor</strong></span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color admin-color"></div>
+                    <span><strong>Administrador</strong></span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color common-color"></div>
+                    <span><strong>Pantallas Comunes</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px; text-align: center;">
+            <p style="color: #666; font-size: 0.9em;">
+                <strong>Nota:</strong> Este diagrama muestra el flujo principal de navegación. 
+                Los usuarios pueden navegar libremente entre las pantallas según sus permisos y rol asignado.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

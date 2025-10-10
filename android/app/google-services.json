@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659294961629",
+    "project_id": "napphyservices",
+    "storage_bucket": "napphyservices.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659294961629:android:a84cc777c757840f5ac034",
+        "android_client_info": {
+          "package_name": "com.napphy.services"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs7DSH29KI0tlnwaQ-A1lXLioqF5MPGfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
