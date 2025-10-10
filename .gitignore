@@ -46,3 +46,12 @@ firebase_options.dart
 
 # Environment variables
 .env
+
+# Documentos
+*.doc
+*.docx
+*.pdf
+*.ppt
+*.pptx
+*.xls
+*.xlsx
