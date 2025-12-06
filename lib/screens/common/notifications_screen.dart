@@ -32,18 +32,18 @@ class NotificationsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notificaciones'),
+        title: const Text('Notificaciones'),
         actions: [
           TextButton(
             onPressed: () {
               // TODO: Marcar todas como leídas
             },
-            child: Text('Marcar todas como leídas'),
+            child: const Text('Marcar todas como leídas'),
           ),
         ],
       ),
       body: notifications.isEmpty
-          ? Center(
+          ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -75,17 +75,17 @@ class NotificationsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     notification['title'] as String,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(notification['message'] as String),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         notification['time'] as String,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
                         ),

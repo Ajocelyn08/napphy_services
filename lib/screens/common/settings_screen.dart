@@ -17,7 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configuración'),
+        title: const Text('Configuración'),
       ),
       body: ListView(
         children: [
@@ -25,8 +25,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Notificaciones',
             children: [
               SwitchListTile(
-                title: Text('Habilitar notificaciones'),
-                subtitle: Text('Recibir todas las notificaciones'),
+                title: const Text('Habilitar notificaciones'),
+                subtitle: const Text('Recibir todas las notificaciones'),
                 value: _notificationsEnabled,
                 onChanged: (value) {
                   setState(() {
@@ -35,8 +35,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SwitchListTile(
-                title: Text('Notificaciones por email'),
-                subtitle: Text('Recibir notificaciones por correo'),
+                title: const Text('Notificaciones por email'),
+                subtitle: const Text('Recibir notificaciones por correo'),
                 value: _emailNotifications,
                 onChanged: _notificationsEnabled
                     ? (value) {
@@ -47,8 +47,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     : null,
               ),
               SwitchListTile(
-                title: Text('Notificaciones push'),
-                subtitle: Text('Recibir notificaciones en el dispositivo'),
+                title: const Text('Notificaciones push'),
+                subtitle: const Text('Recibir notificaciones en el dispositivo'),
                 value: _pushNotifications,
                 onChanged: _notificationsEnabled
                     ? (value) {
@@ -60,20 +60,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
           ),
-          Divider(height: 1),
+          const Divider(height: 1),
           _buildSection(
             title: 'Apariencia',
             children: [
               SwitchListTile(
-                title: Text('Modo oscuro'),
-                subtitle: Text('Usar tema oscuro en la aplicación'),
+                title: const Text('Modo oscuro'),
+                subtitle: const Text('Usar tema oscuro en la aplicación'),
                 value: _darkMode,
                 onChanged: (value) {
                   setState(() {
                     _darkMode = value;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Funcionalidad próximamente disponible'),
                     ),
                   );
@@ -81,69 +81,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
           ),
-          Divider(height: 1),
+          const Divider(height: 1),
           _buildSection(
             title: 'Cuenta',
             children: [
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Editar perfil'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.person),
+                title: const Text('Editar perfil'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   // Ya está implementado en las pantallas de cada rol
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.lock),
-                title: Text('Cambiar contraseña'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.lock),
+                title: const Text('Cambiar contraseña'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showChangePasswordDialog();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.privacy_tip),
-                title: Text('Privacidad'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.privacy_tip),
+                title: const Text('Privacidad'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showPrivacyDialog();
                 },
               ),
             ],
           ),
-          Divider(height: 1),
+          const Divider(height: 1),
           _buildSection(
             title: 'Soporte',
             children: [
               ListTile(
-                leading: Icon(Icons.help),
-                title: Text('Ayuda'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.help),
+                title: const Text('Ayuda'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showHelpDialog();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text('Acerca de'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.info),
+                title: const Text('Acerca de'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showAboutDialog();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.feedback),
-                title: Text('Enviar comentarios'),
-                trailing: Icon(Icons.chevron_right),
+                leading: const Icon(Icons.feedback),
+                title: const Text('Enviar comentarios'),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   _showFeedbackDialog();
                 },
               ),
             ],
           ),
-          Divider(height: 1),
-          Padding(
+          const Divider(height: 1),
+          const Padding(
             padding: EdgeInsets.all(16),
             child: Text(
               'Versión 1.0.0',
@@ -164,7 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
             title,
             style: TextStyle(
@@ -183,12 +183,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Cambiar contraseña'),
-        content: Text('Esta funcionalidad estará disponible próximamente.'),
+        title: const Text('Cambiar contraseña'),
+        content: const Text('Esta funcionalidad estará disponible próximamente.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -199,8 +199,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Privacidad'),
-        content: SingleChildScrollView(
+        title: const Text('Privacidad'),
+        content: const SingleChildScrollView(
           child: Text(
             'En Napphy Services valoramos tu privacidad. '
             'Todos tus datos personales están protegidos y cifrados. '
@@ -210,7 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -221,8 +221,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Ayuda'),
-        content: Column(
+        title: const Text('Ayuda'),
+        content: const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -238,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -250,10 +250,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       applicationName: 'Napphy Services',
       applicationVersion: '1.0.0',
-      applicationIcon: Icon(Icons.child_care, size: 48),
+      applicationIcon: const Icon(Icons.child_care, size: 48),
       children: [
-        SizedBox(height: 16),
-        Text(
+        const SizedBox(height: 16),
+        const Text(
           'Napphy Services es una plataforma que conecta a padres '
           'con niñeras y cuidadores confiables.',
         ),
@@ -267,11 +267,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Enviar comentarios'),
+        title: const Text('Enviar comentarios'),
         content: TextField(
           controller: feedbackController,
           maxLines: 4,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Cuéntanos tu experiencia...',
             border: OutlineInputBorder(),
           ),
@@ -279,16 +279,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('¡Gracias por tus comentarios!')),
+                const SnackBar(content: Text('¡Gracias por tus comentarios!')),
               );
             },
-            child: Text('Enviar'),
+            child: const Text('Enviar'),
           ),
         ],
       ),

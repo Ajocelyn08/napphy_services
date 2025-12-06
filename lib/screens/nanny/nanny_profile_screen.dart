@@ -74,7 +74,7 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Perfil actualizado exitosamente'),
           backgroundColor: Colors.green,
         ),
@@ -103,24 +103,24 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
 
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(title: Text('Mi Perfil')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Mi Perfil')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mi Perfil'),
+        title: const Text('Mi Perfil'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: _saveProfile,
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -141,7 +141,7 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : Icon(Icons.person, size: 60, color: Colors.white),
+                            : const Icon(Icons.person, size: 60, color: Colors.white),
                       ),
                       Positioned(
                         bottom: 0,
@@ -149,11 +149,11 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                         child: CircleAvatar(
                           backgroundColor: Theme.of(context).colorScheme.secondary,
                           child: IconButton(
-                            icon: Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                            icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
                             onPressed: () {
                               // TODO: Implementar selección de imagen
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Funcionalidad próximamente')),
+                                const SnackBar(content: Text('Funcionalidad próximamente')),
                               );
                             },
                           ),
@@ -162,31 +162,31 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
                   authService.currentUserModel?.fullName ?? 'Usuario',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   authService.currentUserModel?.email ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 if (_nannyProfile != null && !_nannyProfile!.isApproved)
                   Card(
                     color: Colors.orange.shade50,
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Row(
                         children: [
-                          Icon(Icons.info_outline, color: Colors.orange),
-                          SizedBox(width: 12),
+                          const Icon(Icons.info_outline, color: Colors.orange),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'Tu perfil está pendiente de aprobación por el administrador.',
@@ -197,17 +197,17 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                       ),
                     ),
                   ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Card(
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Estado',
                               style: TextStyle(
                                 fontSize: 16,
@@ -234,24 +234,24 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 if (_nannyProfile != null) ...[
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.amber, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.star, color: Colors.amber, size: 20),
+                      const SizedBox(width: 8),
                       Text(
                         '${_nannyProfile!.rating.toStringAsFixed(1)} (${_nannyProfile!.totalReviews} reseñas)',
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                 ],
                 TextFormField(
                   controller: _bioController,
                   maxLines: 4,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Biografía',
                     hintText: 'Cuéntanos sobre tu experiencia...',
                   ),
@@ -262,10 +262,10 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _addressController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Dirección',
                     prefixIcon: Icon(Icons.location_on_outlined),
                   ),
@@ -276,11 +276,11 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _hourlyRateController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Tarifa por hora (\$)',
                     prefixIcon: Icon(Icons.attach_money),
                   ),
@@ -295,11 +295,11 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _experienceController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Años de experiencia',
                     prefixIcon: Icon(Icons.work_outline),
                   ),
@@ -310,12 +310,12 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _saveProfile,
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       child: Text('Guardar cambios', style: TextStyle(fontSize: 16)),
                     ),

@@ -122,10 +122,10 @@ class _BookingsTab extends StatelessWidget {
         final bookings = snapshot.data ?? [];
 
         if (bookings.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(Icons.work_off_outlined, size: 80, color: Colors.grey),
                 SizedBox(height: 16),
                 Text('No tienes contrataciones',

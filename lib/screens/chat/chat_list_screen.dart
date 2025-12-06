@@ -17,13 +17,13 @@ class ChatListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mensajes'),
+        title: const Text('Mensajes'),
       ),
       body: StreamBuilder<List<ChatModel>>(
         stream: chatService.getUserChats(userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -33,7 +33,7 @@ class ChatListScreen extends StatelessWidget {
           final chats = snapshot.data ?? [];
 
           if (chats.isEmpty) {
-            return Center(
+            return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -76,7 +76,7 @@ class ChatListScreen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         )
-                      : Icon(Icons.person, color: Colors.white),
+                      : const Icon(Icons.person, color: Colors.white),
                 ),
                 title: Text(
                   otherUserName,
@@ -98,22 +98,22 @@ class ChatListScreen extends StatelessWidget {
                   children: [
                     Text(
                       _formatTime(chat.lastMessageTime),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
                       ),
                     ),
                     if (unreadCount > 0) ...[
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Container(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '$unreadCount',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

@@ -16,11 +16,10 @@ class AppTheme {
   // Tema claro
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
       surface: Colors.white,
-      background: backgroundColor,
       error: errorColor,
     ),
     scaffoldBackgroundColor: backgroundColor,
@@ -86,11 +85,10 @@ class AppTheme {
   // Tema oscuro
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: primaryColor,
       secondary: secondaryColor,
-      surface: const Color(0xFF2D2D44),
-      background: darkBackgroundColor,
+      surface: Color(0xFF2D2D44),
       error: errorColor,
     ),
     scaffoldBackgroundColor: darkBackgroundColor,
@@ -149,7 +147,7 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      color: const Color(0xFF2D2D44),
+      color: Color(0xFF2D2D44),
     ),
   );
 }

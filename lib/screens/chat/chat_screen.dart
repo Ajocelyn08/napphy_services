@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         0,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     }
@@ -89,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_chatId == null) {
       return Scaffold(
         appBar: AppBar(title: Text(widget.receiverName)),
-        body: Center(child: CircularProgressIndicator()),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -98,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text(widget.receiverName),
         actions: [
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () {
               // TODO: Mostrar información del usuario
             },
@@ -112,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
               stream: _chatService.getMessages(_chatId!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -122,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 final messages = snapshot.data ?? [];
 
                 if (messages.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -156,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 return ListView.builder(
                   controller: _scrollController,
                   reverse: true,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
@@ -179,8 +179,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildMessageInput() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
@@ -194,11 +194,11 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.add_circle_outline),
+              icon: const Icon(Icons.add_circle_outline),
               onPressed: () {
                 // TODO: Añadir archivos/imágenes
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Funcionalidad próximamente')),
+                  const SnackBar(content: Text('Funcionalidad próximamente')),
                 );
               },
             ),
@@ -213,7 +213,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,
                   ),
@@ -222,11 +222,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               child: IconButton(
-                icon: Icon(Icons.send, color: Colors.white),
+                icon: const Icon(Icons.send, color: Colors.white),
                 onPressed: _sendMessage,
               ),
             ),
@@ -249,24 +249,24 @@ class _MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment:
             isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!isMe) SizedBox(width: 48),
+          if (!isMe) const SizedBox(width: 48),
           Flexible(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: isMe
                     ? Theme.of(context).colorScheme.primary
                     : Colors.grey[300],
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                  bottomLeft: isMe ? Radius.circular(16) : Radius.zero,
-                  bottomRight: isMe ? Radius.zero : Radius.circular(16),
+                  topLeft: const Radius.circular(16),
+                  topRight: const Radius.circular(16),
+                  bottomLeft: isMe ? const Radius.circular(16) : Radius.zero,
+                  bottomRight: isMe ? Radius.zero : const Radius.circular(16),
                 ),
               ),
               child: Column(
@@ -279,7 +279,7 @@ class _MessageBubble extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     DateFormat('HH:mm').format(message.timestamp),
                     style: TextStyle(
@@ -291,7 +291,7 @@ class _MessageBubble extends StatelessWidget {
               ),
             ),
           ),
-          if (isMe) SizedBox(width: 48),
+          if (isMe) const SizedBox(width: 48),
         ],
       ),
     );

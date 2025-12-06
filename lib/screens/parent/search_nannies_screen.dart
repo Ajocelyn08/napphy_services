@@ -22,7 +22,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buscar Niñeras'),
+        title: const Text('Buscar Niñeras'),
         actions: [
           IconButton(
             icon: Icon(_showFilters ? Icons.filter_list_off : Icons.filter_list),
@@ -38,7 +38,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
         children: [
           if (_showFilters)
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 border: Border(
@@ -48,14 +48,14 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Filtros',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Tarifa máxima por hora: \$${_maxHourlyRate.toInt()}'),
                   Slider(
                     value: _maxHourlyRate,
@@ -69,7 +69,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
                       });
                     },
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Calificación mínima: ${_minRating.toStringAsFixed(1)}'),
                   Slider(
                     value: _minRating,
@@ -94,7 +94,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -113,7 +113,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
                 nannies.sort((a, b) => b.rating.compareTo(a.rating));
 
                 if (nannies.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -138,7 +138,7 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
                 }
 
                 return ListView.builder(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   itemCount: nannies.length,
                   itemBuilder: (context, index) {
                     return _NannyCard(nanny: nannies[index]);
@@ -161,7 +161,7 @@ class _NannyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(
@@ -171,7 +171,7 @@ class _NannyCard extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               CircleAvatar(
@@ -186,9 +186,9 @@ class _NannyCard extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       )
-                    : Icon(Icons.person, size: 35, color: Colors.white),
+                    : const Icon(Icons.person, size: 35, color: Colors.white),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,7 @@ class _NannyCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'Niñera #${nanny.id.substring(0, 6)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -206,13 +206,13 @@ class _NannyCard extends StatelessWidget {
                         ),
                         if (nanny.isAvailable)
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.green.shade50,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Disponible',
                               style: TextStyle(
                                 color: Colors.green,
@@ -223,26 +223,26 @@ class _NannyCard extends StatelessWidget {
                           ),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.star, color: Colors.amber, size: 18),
-                        SizedBox(width: 4),
+                        const Icon(Icons.star, color: Colors.amber, size: 18),
+                        const SizedBox(width: 4),
                         Text(
                           '${nanny.rating.toStringAsFixed(1)} (${nanny.totalReviews})',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(width: 16),
-                        Icon(Icons.work, size: 18, color: Colors.grey),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 16),
+                        const Icon(Icons.work, size: 18, color: Colors.grey),
+                        const SizedBox(width: 4),
                         Text('${nanny.yearsOfExperience} años'),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 18, color: Colors.grey),
-                        SizedBox(width: 4),
+                        const Icon(Icons.location_on, size: 18, color: Colors.grey),
+                        const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             nanny.address,
@@ -253,7 +253,7 @@ class _NannyCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -273,7 +273,7 @@ class _NannyCard extends StatelessWidget {
                               arguments: {'nannyId': nanny.userId},
                             );
                           },
-                          child: Text('Ver perfil'),
+                          child: const Text('Ver perfil'),
                         ),
                       ],
                     ),

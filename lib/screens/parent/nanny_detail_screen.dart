@@ -100,15 +100,15 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(title: Text('Perfil')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Perfil')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     if (_nanny == null || _nannyUser == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Perfil')),
-        body: Center(child: Text('No se pudo cargar el perfil')),
+        appBar: AppBar(title: const Text('Perfil')),
+        body: const Center(child: Text('No se pudo cargar el perfil')),
       );
     }
 
@@ -144,7 +144,7 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                               fit: BoxFit.cover,
                             ),
                           )
-                        : Icon(Icons.person, size: 50),
+                        : const Icon(Icons.person, size: 50),
                   ),
                 ),
               ),
@@ -152,13 +152,13 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           Row(
@@ -188,21 +188,21 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Tarifa',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
                             '\$${_nanny!.hourlyRate.toStringAsFixed(2)} por hora',
                             style: TextStyle(
@@ -215,21 +215,21 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Sobre mÃ­',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(_nanny!.bio.isNotEmpty
                               ? _nanny!.bio
                               : 'Sin descripciÃ³n'),
@@ -237,29 +237,29 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   if (_nanny!.certifications.isNotEmpty)
                     Card(
                       child: Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Certificaciones',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             ..._nanny!.certifications.map((cert) => Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 4),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.check_circle,
+                                      const Icon(Icons.check_circle,
                                           color: Colors.green, size: 20),
-                                      SizedBox(width: 8),
+                                      const SizedBox(width: 8),
                                       Text(cert),
                                     ],
                                   ),
@@ -268,21 +268,21 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Idiomas',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Wrap(
                             spacing: 8,
                             children: _nanny!.languages
@@ -293,17 +293,17 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'ReseÃ±as',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   _ReviewsList(nannyId: widget.nannyId),
-                  SizedBox(height: 80),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
@@ -311,8 +311,8 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
         ],
       ),
       bottomSheet: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -327,16 +327,16 @@ class _NannyDetailScreenState extends State<NannyDetailScreen> {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: _sendMessage,
-                icon: Icon(Icons.chat),
-                label: Text('Mensaje'),
+                icon: const Icon(Icons.chat),
+                label: const Text('Mensaje'),
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: _showBookingDialog,
-                icon: Icon(Icons.calendar_today),
-                label: Text('Contratar'),
+                icon: const Icon(Icons.calendar_today),
+                label: const Text('Contratar'),
               ),
             ),
           ],
@@ -364,17 +364,17 @@ class _StatItem extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: color, size: 32),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
-          style: TextStyle(color: Colors.grey),
+          style: const TextStyle(color: Colors.grey),
         ),
       ],
     );
@@ -394,7 +394,7 @@ class _ReviewsList extends StatelessWidget {
       stream: firestoreService.getReviewsForNanny(nannyId),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Card(
+          return const Card(
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Text('No hay reseÃ±as aÃºn'),
@@ -405,9 +405,9 @@ class _ReviewsList extends StatelessWidget {
         return Column(
           children: snapshot.data!.take(3).map((review) {
             return Card(
-              margin: EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 8),
               child: Padding(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -425,7 +425,7 @@ class _ReviewsList extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(review.comment),
                   ],
                 ),
@@ -478,21 +478,21 @@ class _BookingFormState extends State<_BookingForm> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Solicitar servicio',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListTile(
-                title: Text('Fecha'),
+                title: const Text('Fecha'),
                 subtitle: Text('${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
-                trailing: Icon(Icons.calendar_today),
+                trailing: const Icon(Icons.calendar_today),
                 onTap: () async {
                   final date = await showDatePicker(
                     context: context,
                     initialDate: _selectedDate,
                     firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 365)),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
                   if (date != null) {
                     setState(() {
@@ -502,9 +502,9 @@ class _BookingFormState extends State<_BookingForm> {
                 },
               ),
               ListTile(
-                title: Text('Hora de inicio'),
+                title: const Text('Hora de inicio'),
                 subtitle: Text(_startTime.format(context)),
-                trailing: Icon(Icons.access_time),
+                trailing: const Icon(Icons.access_time),
                 onTap: () async {
                   final time = await showTimePicker(
                     context: context,
@@ -518,9 +518,9 @@ class _BookingFormState extends State<_BookingForm> {
                 },
               ),
               ListTile(
-                title: Text('Hora de fin'),
+                title: const Text('Hora de fin'),
                 subtitle: Text(_endTime.format(context)),
-                trailing: Icon(Icons.access_time),
+                trailing: const Icon(Icons.access_time),
                 onTap: () async {
                   final time = await showTimePicker(
                     context: context,
@@ -533,10 +533,10 @@ class _BookingFormState extends State<_BookingForm> {
                   }
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'DirecciÃ³n',
                   prefixIcon: Icon(Icons.location_on),
                 ),
@@ -547,18 +547,18 @@ class _BookingFormState extends State<_BookingForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _instructionsController,
                 maxLines: 3,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Instrucciones especiales (opcional)',
                   hintText: 'Alergias, rutinas, etc.',
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
@@ -566,14 +566,14 @@ class _BookingFormState extends State<_BookingForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Resumen'),
-                    SizedBox(height: 8),
+                    const Text('Resumen'),
+                    const SizedBox(height: 8),
                     Text('Horas: $hours'),
                     Text('Tarifa: \$${widget.nanny.hourlyRate}/hora'),
-                    Divider(),
+                    const Divider(),
                     Text(
                       'Total: \$${total.toStringAsFixed(2)}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -581,7 +581,7 @@ class _BookingFormState extends State<_BookingForm> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -609,7 +609,7 @@ class _BookingFormState extends State<_BookingForm> {
 
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Solicitud enviada exitosamente'),
                           backgroundColor: Colors.green,
                         ),
@@ -620,13 +620,13 @@ class _BookingFormState extends State<_BookingForm> {
                       );
                     }
                   },
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Text('Enviar solicitud', style: TextStyle(fontSize: 16)),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         ),

@@ -17,7 +17,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _screens = [
+    final List<Widget> screens = [
       _DashboardTab(),
       _PendingNanniesTab(),
       _UsersTab(),
@@ -25,10 +25,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Panel Administrativo'),
+        title: const Text('Panel Administrativo'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               final authService = Provider.of<AuthService>(context, listen: false);
               await authService.signOut();
@@ -37,7 +37,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -68,25 +68,25 @@ class _DashboardTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Resumen',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           GridView.count(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
-            children: [
+            children: const [
               _StatCard(
                 title: 'Usuarios Totales',
                 value: '150',
@@ -113,28 +113,28 @@ class _DashboardTab extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 24),
-          Text(
+          const SizedBox(height: 24),
+          const Text(
             'Actividad Reciente',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
-          _ActivityCard(
+          const SizedBox(height: 16),
+          const _ActivityCard(
             icon: Icons.person_add,
             title: 'Nueva niñera registrada',
             subtitle: 'María González - Hace 2 horas',
             color: Colors.green,
           ),
-          _ActivityCard(
+          const _ActivityCard(
             icon: Icons.check_circle,
             title: 'Contratación completada',
             subtitle: 'Juan Pérez - Hace 5 horas',
             color: Colors.blue,
           ),
-          _ActivityCard(
+          const _ActivityCard(
             icon: Icons.report,
             title: 'Reporte recibido',
             subtitle: 'Usuario #1234 - Hace 1 día',
@@ -163,15 +163,15 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 40, color: color),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
@@ -207,7 +207,7 @@ class _ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: color.withOpacity(0.1),
@@ -229,7 +229,7 @@ class _PendingNanniesTab extends StatelessWidget {
       stream: firestoreService.getNanniesStream(isApproved: false),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -239,7 +239,7 @@ class _PendingNanniesTab extends StatelessWidget {
         final pendingNannies = snapshot.data ?? [];
 
         if (pendingNannies.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -259,7 +259,7 @@ class _PendingNanniesTab extends StatelessWidget {
         }
 
         return ListView.builder(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           itemCount: pendingNannies.length,
           itemBuilder: (context, index) {
             final nanny = pendingNannies[index];
@@ -281,9 +281,9 @@ class _PendingNannyCard extends StatelessWidget {
     final firestoreService = Provider.of<FirestoreService>(context, listen: false);
 
     return Card(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -301,16 +301,16 @@ class _PendingNannyCard extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         )
-                      : Icon(Icons.person, size: 30, color: Colors.white),
+                      : const Icon(Icons.person, size: 30, color: Colors.white),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Niñera #${nanny.id.substring(0, 6)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -322,25 +322,25 @@ class _PendingNannyCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12),
-            Text(
+            const SizedBox(height: 12),
+            const Text(
               'Biografía:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(nanny.bio.isNotEmpty ? nanny.bio : 'Sin biografía'),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               'Dirección: ${nanny.address}',
               style: TextStyle(color: Colors.grey[600]),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             if (nanny.certifications.isNotEmpty) ...[
-              Text(
+              const Text(
                 'Certificaciones:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               ...nanny.certifications.map((cert) => Text('• $cert')),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
             ],
             Row(
               children: [
@@ -349,50 +349,50 @@ class _PendingNannyCard extends StatelessWidget {
                     onPressed: () async {
                       await firestoreService.approveNanny(nanny.userId);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Niñera aprobada'),
                           backgroundColor: Colors.green,
                         ),
                       );
                     },
-                    icon: Icon(Icons.check),
-                    label: Text('Aprobar'),
+                    icon: const Icon(Icons.check),
+                    label: const Text('Aprobar'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text('Rechazar solicitud'),
-                          content: Text(
+                          title: const Text('Rechazar solicitud'),
+                          content: const Text(
                               '¿Estás seguro de rechazar esta solicitud?'),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: Text('Cancelar'),
+                              child: const Text('Cancelar'),
                             ),
                             TextButton(
                               onPressed: () async {
                                 // TODO: Implementar rechazo
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Solicitud rechazada')),
+                                  const SnackBar(content: Text('Solicitud rechazada')),
                                 );
                               },
-                              child: Text('Rechazar'),
+                              child: const Text('Rechazar'),
                             ),
                           ],
                         ),
                       );
                     },
-                    icon: Icon(Icons.close),
-                    label: Text('Rechazar'),
+                    icon: const Icon(Icons.close),
+                    label: const Text('Rechazar'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.red,
                     ),
@@ -410,7 +410,7 @@ class _PendingNannyCard extends StatelessWidget {
 class _UsersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
