@@ -23,44 +23,66 @@ class UserModel {
     this.isActive = true,
   });
 
-  // Convertir de Firebase Document a UserModel
-  factory UserModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data();
-    
-    // Validar que data no sea null y sea un Map
-    if (data == null || data is! Map<String, dynamic>) {
-      throw Exception('Documento inválido o vacío');
+  /// Nueva firma: recibe DocumentSnapshot tipado correctamente
+  factory UserModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data(); // ahora guaranteed Map<String, dynamic> | null
+
+    if (data == null) {
+      throw Exception('Documento inválido o vacío: ${doc.id}');
     }
 
     return UserModel(
       id: doc.id,
-      email: data['email'] ?? '',
-      fullName: data['fullName'] ?? '',
+      email: (data['email'] ?? '') as String,
+      fullName: (data['fullName'] ?? '') as String,
       role: _parseRole(data['role']),
-      photoUrl: data['photoUrl'],
+      photoUrl: data['photoUrl'] as String?,
       createdAt: _parseTimestamp(data['createdAt']) ?? DateTime.now(),
       lastLogin: _parseTimestamp(data['lastLogin']),
-      isActive: data['isActive'] ?? true,
+      isActive: (data['isActive'] ?? true) as bool,
     );
   }
 
-  // Helper para parsear roles de forma segura
-  static UserRole _parseRole(dynamic roleData) {
-    if (roleData == null) return UserRole.parent;
-    
-    final roleString = roleData.toString().toLowerCase();
-    
-    if (roleString.contains('nanny')) return UserRole.nanny;
-    if (roleString.contains('parent')) return UserRole.parent;
-    if (roleString.contains('admin')) return UserRole.admin;
-    
-    return UserRole.parent; // default
+  /// Alternativa: construir desde un Map (útil para withConverter)
+  factory UserModel.fromMap(String id, Map<String, dynamic> data) {
+    return UserModel(
+      id: id,
+      email: (data['email'] ?? '') as String,
+      fullName: (data['fullName'] ?? '') as String,
+      role: _parseRole(data['role']),
+      photoUrl: data['photoUrl'] as String?,
+      createdAt: _parseTimestamp(data['createdAt']) ?? DateTime.now(),
+      lastLogin: _parseTimestamp(data['lastLogin']),
+      isActive: (data['isActive'] ?? true) as bool,
+    );
   }
 
-  // Helper para parsear timestamps de forma segura
+  static UserRole _parseRole(dynamic roleData) {
+  if (roleData == null) return UserRole.parent;
+
+  // Si viene como lista: ["parent"]
+  if (roleData is List && roleData.isNotEmpty) {
+    final first = roleData.first.toString().toLowerCase();
+    if (first.contains('nanny')) return UserRole.nanny;
+    if (first.contains('parent')) return UserRole.parent;
+    if (first.contains('admin')) return UserRole.admin;
+    return UserRole.parent;
+  }
+
+      // Si viene como string: "parent"
+      final roleString = roleData.toString().toLowerCase();
+
+      if (roleString.contains('nanny')) return UserRole.nanny;
+      if (roleString.contains('parent')) return UserRole.parent;
+      if (roleString.contains('admin')) return UserRole.admin;
+
+      return UserRole.parent;
+  }
+
+
   static DateTime? _parseTimestamp(dynamic timestampData) {
     if (timestampData == null) return null;
-    
+
     try {
       if (timestampData is Timestamp) {
         return timestampData.toDate();
@@ -68,20 +90,21 @@ class UserModel {
         return DateTime.fromMillisecondsSinceEpoch(timestampData);
       } else if (timestampData is String) {
         return DateTime.parse(timestampData);
+      } else if (timestampData is DateTime) {
+        return timestampData;
       }
     } catch (e) {
-      print('Error parseando timestamp: $e');
+      // ignore parse errors, retorna null
     }
-    
+
     return null;
   }
 
-  // Convertir UserModel a Map para Firebase
   Map<String, dynamic> toMap() {
     return {
       'email': email,
       'fullName': fullName,
-      'role': role.name, // Usa .name en lugar de split
+      'role': role.name,
       'photoUrl': photoUrl,
       'createdAt': Timestamp.fromDate(createdAt),
       'lastLogin': lastLogin != null ? Timestamp.fromDate(lastLogin!) : null,
