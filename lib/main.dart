@@ -27,7 +27,7 @@ class NapphyApp extends StatelessWidget {
         ChangeNotifierProvider<AuthService>(
           create: (_) => AuthService(),
         ),
-        Provider<FirestoreService>(
+        ChangeNotifierProvider<FirestoreService>(
           create: (_) => FirestoreService(),
         ),
       ],

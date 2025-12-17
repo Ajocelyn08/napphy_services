@@ -14,12 +14,16 @@ import 'package:napphy_services/screens/chat/chat_list_screen.dart';
 import 'package:napphy_services/screens/chat/chat_screen.dart';
 import 'package:napphy_services/screens/common/notifications_screen.dart';
 import 'package:napphy_services/screens/common/settings_screen.dart';
+import 'package:napphy_services/screens/parent/parent_profile_screen.dart';
+import 'package:napphy_services/screens/parent/parent_view_profile_screen.dart';
 
 class Routes {
   static const String splash = '/';
   static const String login = '/login';
   static const String register = '/register';
   static const String roleSelection = '/role-selection';
+
+  static const viewParentProfile = '/view-parent-profile';
 
   // Nanny routes
   static const String nannyHome = '/nanny/home';
@@ -38,6 +42,9 @@ class Routes {
   static const String chat = '/chat';
   static const String notifications = '/notifications';
   static const String settings = '/settings';
+
+  static const editParentProfile = '/edit-parent-profile';
+  static const parentViewProfile = '/parent-view-profile';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -86,6 +93,11 @@ class Routes {
       case chatList:
         return MaterialPageRoute(builder: (_) => const ChatListScreen());
 
+      case viewParentProfile:
+        return MaterialPageRoute(
+          builder: (_) => const ParentViewProfileScreen(),
+        );
+
       case chat:
         final args = (settings.arguments as Map<String, dynamic>?) ?? {};
         final receiverId = args['receiverId'] as String?;
@@ -98,6 +110,11 @@ class Routes {
             receiverId: receiverId,
             receiverName: receiverName,
           ),
+        );
+
+      case Routes.editParentProfile:
+        return MaterialPageRoute(
+          builder: (_) => const ParentProfileScreen(),
         );
 
       case notifications:

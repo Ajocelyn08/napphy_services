@@ -409,7 +409,8 @@ class _BookingCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: _getStatusColor().withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
@@ -462,11 +463,33 @@ class _ProfileTab extends StatelessWidget {
       children: [
         Card(
           child: ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text('Ver perfil'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.viewParentProfile);
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          child: ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuración'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.pushNamed(context, Routes.settings);
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Editar perfil'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.editParentProfile);
             },
           ),
         ),
@@ -497,9 +520,11 @@ class _ProfileTab extends StatelessWidget {
         Card(
           child: ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Cerrar sesión', style: TextStyle(color: Colors.red)),
+            title: const Text('Cerrar sesión',
+                style: TextStyle(color: Colors.red)),
             onTap: () async {
-              final authService = Provider.of<AuthService>(context, listen: false);
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
               await authService.signOut();
               Navigator.pushReplacementNamed(context, Routes.login);
             },

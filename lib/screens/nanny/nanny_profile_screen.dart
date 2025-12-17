@@ -30,25 +30,31 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
 
   Future<void> _loadProfile() async {
     final authService = Provider.of<AuthService>(context, listen: false);
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+    final firestoreService =
+        Provider.of<FirestoreService>(context, listen: false);
 
     try {
-      final profile = await firestoreService.getNannyProfile(authService.currentUser!.uid);
-      if (profile != null) {
-        setState(() {
-          _nannyProfile = profile;
-          _bioController.text = profile.bio;
-          _addressController.text = profile.address;
+      final profile =
+          await firestoreService.getNannyProfile(authService.currentUser!.uid);
+
+      setState(() {
+        _nannyProfile = profile;
+
+        if (profile != null) {
+          _bioController.text = profile.bio ?? '';
+          _addressController.text = profile.address ?? '';
           _hourlyRateController.text = profile.hourlyRate.toString();
           _experienceController.text = profile.yearsOfExperience.toString();
           _isAvailable = profile.isAvailable;
-          _isLoading = false;
-        });
-      }
+        }
+
+        _isLoading = false;
+      });
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al cargar perfil: $e')),
       );
@@ -59,10 +65,11 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final authService = Provider.of<AuthService>(context, listen: false);
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+    final firestoreService =
+        Provider.of<FirestoreService>(context, listen: false);
 
     try {
-      await firestoreService.updateNannyProfile(
+      await firestoreService.saveNannyProfile(
         authService.currentUser!.uid,
         {
           'bio': _bioController.text.trim(),
@@ -141,19 +148,24 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(Icons.person, size: 60, color: Colors.white),
+                            : const Icon(Icons.person,
+                                size: 60, color: Colors.white),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         child: CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
                           child: IconButton(
-                            icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                            icon: const Icon(Icons.camera_alt,
+                                color: Colors.white, size: 20),
                             onPressed: () {
                               // TODO: Implementar selección de imagen
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Funcionalidad próximamente')),
+                                const SnackBar(
+                                    content:
+                                        Text('Funcionalidad próximamente')),
                               );
                             },
                           ),
@@ -317,7 +329,8 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     onPressed: _saveProfile,
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text('Guardar cambios', style: TextStyle(fontSize: 16)),
+                      child: Text('Guardar cambios',
+                          style: TextStyle(fontSize: 16)),
                     ),
                   ),
                 ),

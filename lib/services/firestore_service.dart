@@ -11,7 +11,10 @@ class FirestoreService extends ChangeNotifier {
   // CRUD para Nanny
   Future<void> createNannyProfile(NannyModel nanny) async {
     try {
-      await _firestore.collection('nannies').doc(nanny.userId).set(nanny.toMap());
+      await _firestore
+          .collection('nannies')
+          .doc(nanny.userId)
+          .set(nanny.toMap());
     } catch (e) {
       throw Exception('Error al crear perfil de niñera: $e');
     }
@@ -19,7 +22,8 @@ class FirestoreService extends ChangeNotifier {
 
   Future<NannyModel?> getNannyProfile(String userId) async {
     try {
-      DocumentSnapshot doc = await _firestore.collection('nannies').doc(userId).get();
+      DocumentSnapshot doc =
+          await _firestore.collection('nannies').doc(userId).get();
       if (doc.exists) {
         return NannyModel.fromFirestore(doc);
       }
@@ -29,12 +33,45 @@ class FirestoreService extends ChangeNotifier {
     }
   }
 
-  Future<void> updateNannyProfile(String userId, Map<String, dynamic> updates) async {
+  //Future<void> updateNannyProfile(String userId, Map<String, dynamic> updates) async {
+  // try {
+  //  await _firestore.collection('nannies').doc(userId).update(updates);
+  //  notifyListeners();
+  //} catch (e) {
+  //  throw Exception('Error al actualizar perfil de niñera: $e');
+  //}
+  //}
+
+  Future<void> saveNannyProfile(
+      String userId, Map<String, dynamic> data) async {
     try {
-      await _firestore.collection('nannies').doc(userId).update(updates);
+      await _firestore.collection('nannies').doc(userId).set(
+        {
+          ...data,
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true), // 👈 CLAVE
+      );
+
       notifyListeners();
     } catch (e) {
-      throw Exception('Error al actualizar perfil de niñera: $e');
+      throw Exception('Error al guardar perfil de niñera: $e');
+    }
+  }
+
+  Future<void> updateParentProfile(
+    String userId,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      await _firestore
+          .collection('parents')
+          .doc(userId)
+          .set(updates, SetOptions(merge: true));
+
+      notifyListeners();
+    } catch (e) {
+      throw Exception('Error al actualizar perfil de padre: $e');
     }
   }
 
@@ -63,7 +100,8 @@ class FirestoreService extends ChangeNotifier {
     double? radiusKm,
   }) async {
     try {
-      Query query = _firestore.collection('nannies').where('isApproved', isEqualTo: true);
+      Query query =
+          _firestore.collection('nannies').where('isApproved', isEqualTo: true);
 
       if (maxHourlyRate != null) {
         query = query.where('hourlyRate', isLessThanOrEqualTo: maxHourlyRate);
@@ -73,9 +111,8 @@ class FirestoreService extends ChangeNotifier {
       }
 
       QuerySnapshot snapshot = await query.get();
-      List<NannyModel> nannies = snapshot.docs
-          .map((doc) => NannyModel.fromFirestore(doc))
-          .toList();
+      List<NannyModel> nannies =
+          snapshot.docs.map((doc) => NannyModel.fromFirestore(doc)).toList();
 
       // Filtrar por ubicación si se proporciona
       if (nearLocation != null && radiusKm != null) {
@@ -99,7 +136,10 @@ class FirestoreService extends ChangeNotifier {
   // CRUD para Parent
   Future<void> createParentProfile(ParentModel parent) async {
     try {
-      await _firestore.collection('parents').doc(parent.userId).set(parent.toMap());
+      await _firestore
+          .collection('parents')
+          .doc(parent.userId)
+          .set(parent.toMap());
     } catch (e) {
       throw Exception('Error al crear perfil de padre: $e');
     }
@@ -107,7 +147,8 @@ class FirestoreService extends ChangeNotifier {
 
   Future<ParentModel?> getParentProfile(String userId) async {
     try {
-      DocumentSnapshot doc = await _firestore.collection('parents').doc(userId).get();
+      DocumentSnapshot doc =
+          await _firestore.collection('parents').doc(userId).get();
       if (doc.exists) {
         return ParentModel.fromFirestore(doc);
       }
@@ -117,26 +158,29 @@ class FirestoreService extends ChangeNotifier {
     }
   }
 
-  Future<void> updateParentProfile(String userId, Map<String, dynamic> updates) async {
-    try {
-      await _firestore.collection('parents').doc(userId).update(updates);
-      notifyListeners();
-    } catch (e) {
-      throw Exception('Error al actualizar perfil de padre: $e');
-    }
-  }
+ // Future<void> updateParentProfile(
+   //   String userId, Map<String, dynamic> updates) async {
+    //try {
+      //await _firestore.collection('parents').doc(userId).update(updates);
+      //notifyListeners();
+    //} catch (e) {
+      //throw Exception('Error al actualizar perfil de padre: $e');
+    //}
+  //}
 
   // CRUD para Booking
   Future<String> createBooking(BookingModel booking) async {
     try {
-      DocumentReference docRef = await _firestore.collection('bookings').add(booking.toMap());
+      DocumentReference docRef =
+          await _firestore.collection('bookings').add(booking.toMap());
       return docRef.id;
     } catch (e) {
       throw Exception('Error al crear contratación: $e');
     }
   }
 
-  Future<void> updateBooking(String bookingId, Map<String, dynamic> updates) async {
+  Future<void> updateBooking(
+      String bookingId, Map<String, dynamic> updates) async {
     try {
       await _firestore.collection('bookings').doc(bookingId).update(updates);
       notifyListeners();
@@ -152,7 +196,9 @@ class FirestoreService extends ChangeNotifier {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => BookingModel.fromFirestore(doc)).toList();
+      return snapshot.docs
+          .map((doc) => BookingModel.fromFirestore(doc))
+          .toList();
     });
   }
 
@@ -163,7 +209,9 @@ class FirestoreService extends ChangeNotifier {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => BookingModel.fromFirestore(doc)).toList();
+      return snapshot.docs
+          .map((doc) => BookingModel.fromFirestore(doc))
+          .toList();
     });
   }
 
@@ -204,7 +252,9 @@ class FirestoreService extends ChangeNotifier {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => ReviewModel.fromFirestore(doc)).toList();
+      return snapshot.docs
+          .map((doc) => ReviewModel.fromFirestore(doc))
+          .toList();
     });
   }
 
@@ -245,14 +295,18 @@ class FirestoreService extends ChangeNotifier {
   }
 
   // Utilidad: Calcular distancia entre dos puntos (fórmula Haversine simplificada)
-  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  double _calculateDistance(
+      double lat1, double lon1, double lat2, double lon2) {
     const double earthRadius = 6371; // km
     double dLat = _toRadians(lat2 - lat1);
     double dLon = _toRadians(lon2 - lon1);
 
     double a = 0.5 -
         (dLat / 2).cos() / 2 +
-        lat1.toRadians().cos() * lat2.toRadians().cos() * (1 - (dLon / 2).cos()) / 2;
+        lat1.toRadians().cos() *
+            lat2.toRadians().cos() *
+            (1 - (dLon / 2).cos()) /
+            2;
 
     return earthRadius * 2 * a.asin();
   }

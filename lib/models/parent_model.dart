@@ -8,7 +8,7 @@ class ParentModel {
   final int numberOfChildren;
   final List<int> childrenAges;
   final String? specialRequirements;
-  final DateTime createdAt;
+  final DateTime? createdAt; // ✅ NULLABLE
 
   ParentModel({
     required this.id,
@@ -18,11 +18,12 @@ class ParentModel {
     this.numberOfChildren = 0,
     this.childrenAges = const [],
     this.specialRequirements,
-    required this.createdAt,
+    this.createdAt, // ✅ NO required
   });
 
   factory ParentModel.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>;
+
     return ParentModel(
       id: doc.id,
       userId: data['userId'] ?? '',
@@ -31,7 +32,9 @@ class ParentModel {
       numberOfChildren: data['numberOfChildren'] ?? 0,
       childrenAges: List<int>.from(data['childrenAges'] ?? []),
       specialRequirements: data['specialRequirements'],
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
+          : null,
     );
   }
 
@@ -43,7 +46,9 @@ class ParentModel {
       'numberOfChildren': numberOfChildren,
       'childrenAges': childrenAges,
       'specialRequirements': specialRequirements,
-      'createdAt': Timestamp.fromDate(createdAt),
+      'createdAt': createdAt != null
+          ? Timestamp.fromDate(createdAt!)
+          : FieldValue.serverTimestamp(), // ✅ seguro
     };
   }
 
@@ -54,6 +59,7 @@ class ParentModel {
     int? numberOfChildren,
     List<int>? childrenAges,
     String? specialRequirements,
+    DateTime? createdAt,
   }) {
     return ParentModel(
       id: id,
@@ -63,7 +69,7 @@ class ParentModel {
       numberOfChildren: numberOfChildren ?? this.numberOfChildren,
       childrenAges: childrenAges ?? this.childrenAges,
       specialRequirements: specialRequirements ?? this.specialRequirements,
-      createdAt: createdAt,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }
