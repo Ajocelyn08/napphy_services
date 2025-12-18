@@ -76,20 +76,38 @@ class FirestoreService extends ChangeNotifier {
   }
 
   Stream<List<NannyModel>> getNanniesStream({
-    bool? isApproved,
-    bool? isAvailable,
+    bool isApproved = true,
+    bool isAvailable = true,
   }) {
-    Query query = _firestore.collection('nannies');
+    return _firestore
+        .collection('nannies')
+        .where('isApproved', isEqualTo: isApproved)
+        .where('isAvailable', isEqualTo: isAvailable)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => NannyModel.fromFirestore(doc))
+              .toList(),
+        );
+  }
 
-    if (isApproved != null) {
-      query = query.where('isApproved', isEqualTo: isApproved);
-    }
-    if (isAvailable != null) {
-      query = query.where('isAvailable', isEqualTo: isAvailable);
-    }
+  Stream<List<NannyModel>> getNanniesByService({
+    required String service,
+    bool isApproved = true,
+    bool isAvailable = true,
+  }) {
+    return _firestore.collection('nannies').snapshots().map((snapshot) {
+      final all =
+          snapshot.docs.map((doc) => NannyModel.fromFirestore(doc)).toList();
 
-    return query.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => NannyModel.fromFirestore(doc)).toList();
+      final filtered = all.where((nanny) {
+        return nanny.services.contains(service);
+      }).toList();
+
+      debugPrint('Niñeras totales: ${all.length}');
+      debugPrint('Niñeras con servicio $service: ${filtered.length}');
+
+      return filtered;
     });
   }
 
@@ -158,14 +176,14 @@ class FirestoreService extends ChangeNotifier {
     }
   }
 
- // Future<void> updateParentProfile(
-   //   String userId, Map<String, dynamic> updates) async {
-    //try {
-      //await _firestore.collection('parents').doc(userId).update(updates);
-      //notifyListeners();
-    //} catch (e) {
-      //throw Exception('Error al actualizar perfil de padre: $e');
-    //}
+  // Future<void> updateParentProfile(
+  //   String userId, Map<String, dynamic> updates) async {
+  //try {
+  //await _firestore.collection('parents').doc(userId).update(updates);
+  //notifyListeners();
+  //} catch (e) {
+  //throw Exception('Error al actualizar perfil de padre: $e');
+  //}
   //}
 
   // CRUD para Booking

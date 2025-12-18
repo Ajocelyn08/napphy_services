@@ -16,6 +16,7 @@ import 'package:napphy_services/screens/common/notifications_screen.dart';
 import 'package:napphy_services/screens/common/settings_screen.dart';
 import 'package:napphy_services/screens/parent/parent_profile_screen.dart';
 import 'package:napphy_services/screens/parent/parent_view_profile_screen.dart';
+import 'package:napphy_services/screens/nanny/nanny_view_profile_screen.dart';
 
 class Routes {
   static const String splash = '/';
@@ -45,6 +46,8 @@ class Routes {
 
   static const editParentProfile = '/edit-parent-profile';
   static const parentViewProfile = '/parent-view-profile';
+
+  static const nannyViewProfile = '/nanny-view-profile';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -76,6 +79,11 @@ class Routes {
 
       case searchNannies:
         return MaterialPageRoute(builder: (_) => const SearchNanniesScreen());
+
+      case Routes.nannyViewProfile:
+        return MaterialPageRoute(
+          builder: (_) => const NannyViewProfileScreen(),
+        );
 
       case nannyDetail:
         final args = (settings.arguments as Map<String, dynamic>?) ?? {};

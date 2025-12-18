@@ -15,9 +15,24 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
   double _maxHourlyRate = 100.0;
   double _minRating = 0.0;
   bool _showFilters = false;
+  String? selectedService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    selectedService = args?['service'];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    selectedService = args?['service'];
+
     final firestoreService = Provider.of<FirestoreService>(context);
 
     return Scaffold(
@@ -25,7 +40,8 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
         title: const Text('Buscar Niñeras'),
         actions: [
           IconButton(
-            icon: Icon(_showFilters ? Icons.filter_list_off : Icons.filter_list),
+            icon:
+                Icon(_showFilters ? Icons.filter_list_off : Icons.filter_list),
             onPressed: () {
               setState(() {
                 _showFilters = !_showFilters;
@@ -88,10 +104,16 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
             ),
           Expanded(
             child: StreamBuilder<List<NannyModel>>(
-              stream: firestoreService.getNanniesStream(
-                isApproved: true,
-                isAvailable: true,
-              ),
+              stream: selectedService == null
+                  ? firestoreService.getNanniesStream(
+                      isApproved: true,
+                      isAvailable: true,
+                    )
+                  : firestoreService.getNanniesByService(
+                      service: selectedService!,
+                      isApproved: true,
+                      isAvailable: true,
+                    ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -103,42 +125,19 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
 
                 List<NannyModel> nannies = snapshot.data ?? [];
 
-                // Aplicar filtros
+                // filtros locales
                 nannies = nannies.where((nanny) {
                   return nanny.hourlyRate <= _maxHourlyRate &&
                       nanny.rating >= _minRating;
                 }).toList();
 
-                // Ordenar por rating
-                nannies.sort((a, b) => b.rating.compareTo(a.rating));
-
                 if (nannies.isEmpty) {
                   return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.search_off,
-                          size: 80,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'No se encontraron niñeras',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Intenta ajustar los filtros',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
+                    child: Text('No se encontraron niñeras'),
                   );
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16),
                   itemCount: nannies.length,
                   itemBuilder: (context, index) {
                     return _NannyCard(nanny: nannies[index]);
@@ -241,7 +240,8 @@ class _NannyCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.location_on, size: 18, color: Colors.grey),
+                        const Icon(Icons.location_on,
+                            size: 18, color: Colors.grey),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:napphy_services/services/auth_service.dart';
 import 'package:napphy_services/services/firestore_service.dart';
 import 'package:napphy_services/models/nanny_model.dart';
+import 'package:napphy_services/utils/nanny_services.dart';
 
 class NannyProfileScreen extends StatefulWidget {
   const NannyProfileScreen({super.key});
@@ -17,10 +18,17 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
   final _addressController = TextEditingController();
   final _hourlyRateController = TextEditingController();
   final _experienceController = TextEditingController();
+  final List<Map<String, String>> availableServices = [
+    {'id': 'childcare', 'label': 'Cuidado infantil'},
+    {'id': 'nightcare', 'label': 'Cuidado nocturno'},
+    {'id': 'homework', 'label': 'Apoyo con tareas'},
+    {'id': 'special', 'label': 'Necesidades especiales'},
+  ];
 
   bool _isLoading = true;
   bool _isAvailable = true;
   NannyModel? _nannyProfile;
+  List<String> _selectedServices = [];
 
   @override
   void initState() {
@@ -46,6 +54,8 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
           _hourlyRateController.text = profile.hourlyRate.toString();
           _experienceController.text = profile.yearsOfExperience.toString();
           _isAvailable = profile.isAvailable;
+          _selectedServices = List<String>.from(profile.services ?? []);
+          _selectedServices = profile.services;
         }
 
         _isLoading = false;
@@ -77,6 +87,7 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
           'hourlyRate': double.parse(_hourlyRateController.text),
           'yearsOfExperience': int.parse(_experienceController.text),
           'isAvailable': _isAvailable,
+          'services': _selectedServices,
         },
       );
 
@@ -321,6 +332,53 @@ class _NannyProfileScreenState extends State<NannyProfileScreen> {
                     }
                     return null;
                   },
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Servicios que ofreces',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                ...nannyServices.entries.map((entry) {
+                  final key = entry.key;
+                  final label = entry.value;
+
+                  return CheckboxListTile(
+                    title: Text(label),
+                    value: _selectedServices.contains(key),
+                    onChanged: (checked) {
+                      setState(() {
+                        if (checked == true) {
+                          _selectedServices.add(key);
+                        } else {
+                          _selectedServices.remove(key);
+                        }
+                      });
+                    },
+                  );
+                }).toList(),
+                const SizedBox(height: 16),
+                const Text(
+                  'Servicios que ofreces',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Wrap(
+                  spacing: 8,
+                  children: availableServices.map((service) {
+                    return FilterChip(
+                      label: Text(service['label']!),
+                      selected: _selectedServices.contains(service['id']),
+                      onSelected: (selected) {
+                        setState(() {
+                          if (selected) {
+                            _selectedServices.add(service['id']!);
+                          } else {
+                            _selectedServices.remove(service['id']);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(height: 32),
                 SizedBox(

@@ -4,6 +4,7 @@ class NannyModel {
   final String id;
   final String userId;
   final int age;
+  final List<String> services;
   final List<String> certifications;
   final Map<String, dynamic> availability; // {day: [hours]}
   final GeoPoint location;
@@ -37,6 +38,7 @@ class NannyModel {
     this.rating = 0.0,
     this.totalReviews = 0,
     required this.createdAt,
+    this.services = const [],
   });
 
   factory NannyModel.fromFirestore(DocumentSnapshot doc) {
@@ -45,6 +47,7 @@ class NannyModel {
       id: doc.id,
       userId: data['userId'] ?? '',
       age: data['age'] ?? 18,
+      services: List<String>.from(data['services'] ?? []),
       certifications: List<String>.from(data['certifications'] ?? []),
       availability: Map<String, dynamic>.from(data['availability'] ?? {}),
       location: data['location'] ?? const GeoPoint(0, 0),
@@ -58,7 +61,9 @@ class NannyModel {
       isApproved: data['isApproved'] ?? false,
       rating: (data['rating'] ?? 0).toDouble(),
       totalReviews: data['totalReviews'] ?? 0,
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
     );
   }
 
@@ -67,6 +72,7 @@ class NannyModel {
       'userId': userId,
       'age': age,
       'certifications': certifications,
+      'services': services,
       'availability': availability,
       'location': location,
       'address': address,
@@ -87,6 +93,7 @@ class NannyModel {
     String? userId,
     int? age,
     List<String>? certifications,
+    List<String>? services,
     Map<String, dynamic>? availability,
     GeoPoint? location,
     String? address,
@@ -105,6 +112,7 @@ class NannyModel {
       userId: userId ?? this.userId,
       age: age ?? this.age,
       certifications: certifications ?? this.certifications,
+      services: services ?? this.services,
       availability: availability ?? this.availability,
       location: location ?? this.location,
       address: address ?? this.address,

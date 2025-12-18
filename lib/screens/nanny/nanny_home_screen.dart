@@ -32,7 +32,8 @@ class _NannyHomeScreenState extends State<NannyHomeScreen> {
     }
 
     if (userModel.role != UserRole.nanny) {
-      debugPrint('NannyHomeScreen: rol incorrecto (${userModel.role}), redirigiendo...');
+      debugPrint(
+          'NannyHomeScreen: rol incorrecto (${userModel.role}), redirigiendo...');
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         switch (userModel.role) {
@@ -102,7 +103,8 @@ class _BookingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+    final firestoreService =
+        Provider.of<FirestoreService>(context, listen: false);
 
     if (userId.isEmpty) {
       return const Center(child: CircularProgressIndicator());
@@ -188,7 +190,8 @@ class _BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+    final firestoreService =
+        Provider.of<FirestoreService>(context, listen: false);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -202,10 +205,12 @@ class _BookingCard extends StatelessWidget {
               children: [
                 Text(
                   DateFormat('dd MMM yyyy').format(booking.startDate),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: _getStatusColor().withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
@@ -254,7 +259,8 @@ class _BookingCard extends StatelessWidget {
             if (booking.specialInstructions != null &&
                 booking.specialInstructions!.isNotEmpty) ...[
               const SizedBox(height: 12),
-              const Text('Instrucciones:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Instrucciones:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Text(booking.specialInstructions!),
             ],
@@ -271,13 +277,15 @@ class _BookingCard extends StatelessWidget {
                         });
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Contratación aceptada')),
+                            const SnackBar(
+                                content: Text('Contratación aceptada')),
                           );
                         }
                       },
                       icon: const Icon(Icons.check),
                       label: const Text('Aceptar'),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -289,13 +297,15 @@ class _BookingCard extends StatelessWidget {
                         });
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Contratación rechazada')),
+                            const SnackBar(
+                                content: Text('Contratación rechazada')),
                           );
                         }
                       },
                       icon: const Icon(Icons.close),
                       label: const Text('Rechazar'),
-                      style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+                      style:
+                          OutlinedButton.styleFrom(foregroundColor: Colors.red),
                     ),
                   ),
                 ],
@@ -336,6 +346,15 @@ class _ProfileTab extends StatelessWidget {
         const SizedBox(height: 8),
         Card(
           child: ListTile(
+            leading: const Icon(Icons.visibility),
+            title: const Text('Ver perfil'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.pushNamed(context, Routes.nannyViewProfile),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          child: ListTile(
             leading: const Icon(Icons.help_outline),
             title: const Text('Ayuda y soporte'),
             trailing: const Icon(Icons.chevron_right),
@@ -360,12 +379,14 @@ class _ProfileTab extends StatelessWidget {
         Card(
           child: ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Cerrar sesión', style: TextStyle(color: Colors.red)),
+            title: const Text('Cerrar sesión',
+                style: TextStyle(color: Colors.red)),
             onTap: () async {
               final auth = context.read<AuthService>();
               await auth.signOut();
               if (context.mounted) {
-                Navigator.of(context).pushNamedAndRemoveUntil(Routes.login, (r) => false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(Routes.login, (r) => false);
               }
             },
           ),

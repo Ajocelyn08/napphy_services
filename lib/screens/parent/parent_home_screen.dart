@@ -148,21 +148,25 @@ class _HomeTab extends StatelessWidget {
                   icon: Icons.child_care,
                   title: 'Cuidado infantil',
                   color: Colors.blue,
+                  service: 'childcare',
                 ),
                 _ServiceCard(
                   icon: Icons.school,
                   title: 'Ayuda con tareas',
                   color: Colors.green,
+                  service: 'homework',
                 ),
                 _ServiceCard(
                   icon: Icons.medical_services,
                   title: 'Primeros auxilios',
                   color: Colors.red,
+                  service: 'first_aid',
                 ),
                 _ServiceCard(
                   icon: Icons.schedule,
                   title: 'Cuidado flexible',
                   color: Colors.orange,
+                  service: 'flexible',
                 ),
               ],
             ),
@@ -203,18 +207,28 @@ class _ServiceCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final Color color;
+  final String service;
 
   const _ServiceCard({
     required this.icon,
     required this.title,
     required this.color,
+    required this.service,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            Routes.searchNannies,
+            arguments: {
+              'service': service,
+            },
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
