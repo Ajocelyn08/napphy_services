@@ -592,7 +592,8 @@ class _BookingFormState extends State<_BookingForm> {
                       BookingModel booking = BookingModel(
                         id: '',
                         parentId: authService.currentUser!.uid,
-                        nannyId: widget.nanny.userId,
+                        nannyId: widget.nanny.id,
+                        nannyName: widget.nannyUser.fullName,
                         startDate: _selectedDate,
                         endDate: _selectedDate,
                         startTime: _startTime.format(context),
