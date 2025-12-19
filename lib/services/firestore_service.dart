@@ -220,18 +220,19 @@ class FirestoreService extends ChangeNotifier {
     });
   }
 
-  Stream<List<BookingModel>> getBookingsForParent(String parentId) {
-    return _firestore
-        .collection('bookings')
-        .where('parentId', isEqualTo: parentId)
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => BookingModel.fromFirestore(doc))
-          .toList();
-    });
-  }
+ Stream<List<BookingModel>> getBookingsForParent(String parentId) {
+  return FirebaseFirestore.instance
+      .collection('bookings')
+      .where('parentId', isEqualTo: parentId)
+      .orderBy('startDate', descending: true)
+      .snapshots()
+      .map(
+        (snapshot) => snapshot.docs
+            .map((doc) => BookingModel.fromFirestore(doc))
+            .toList(),
+      );
+}
+
 
   // CRUD para Review
   Future<void> createReview(ReviewModel review) async {

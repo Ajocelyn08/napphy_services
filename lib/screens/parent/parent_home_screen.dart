@@ -5,6 +5,7 @@ import 'package:napphy_services/services/auth_service.dart';
 import 'package:napphy_services/services/firestore_service.dart';
 import 'package:napphy_services/models/booking_model.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -303,17 +304,37 @@ class _StepCard extends StatelessWidget {
   }
 }
 
-class _BookingsTab extends StatelessWidget {
+ class _BookingsTab extends StatefulWidget {
   final String userId;
 
   const _BookingsTab({required this.userId});
+
+  @override
+  State<_BookingsTab> createState() => _BookingsTabState();
+}
+
+class _BookingsTabState extends State<_BookingsTab> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// ✅ Seleccionar automáticamente el día de hoy
+    _selectedDay = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final firestoreService = Provider.of<FirestoreService>(context);
 
     return StreamBuilder<List<BookingModel>>(
-      stream: firestoreService.getBookingsForParent(userId),
+      stream: firestoreService.getBookingsForParent(widget.userId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -325,40 +346,85 @@ class _BookingsTab extends StatelessWidget {
 
         final bookings = snapshot.data ?? [];
 
-        if (bookings.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 80,
-                  color: Colors.grey,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'No tienes reservas',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.searchNannies);
-                  },
-                  child: const Text('Buscar Niñeras'),
-                ),
-              ],
-            ),
+        /// 📌 Agrupar reservas por día (normalizado)
+        final Map<DateTime, List<BookingModel>> bookingsByDay = {};
+        for (final booking in bookings) {
+          final day = DateTime(
+            booking.startDate.year,
+            booking.startDate.month,
+            booking.startDate.day,
           );
+
+          bookingsByDay.putIfAbsent(day, () => []).add(booking);
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: bookings.length,
-          itemBuilder: (context, index) {
-            final booking = bookings[index];
-            return _BookingCard(booking: booking);
-          },
+        final selectedBookings =
+            bookingsByDay[_selectedDay] ?? [];
+
+        return Column(
+          children: [
+            /// 📅 CALENDARIO
+            TableCalendar<BookingModel>(
+              firstDay: DateTime.utc(2020, 1, 1),
+              lastDay: DateTime.utc(2035, 12, 31),
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) =>
+                  isSameDay(_selectedDay, day),
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = DateTime(
+                    selectedDay.year,
+                    selectedDay.month,
+                    selectedDay.day,
+                  );
+                  _focusedDay = focusedDay;
+                });
+              },
+              eventLoader: (day) {
+                final key = DateTime(day.year, day.month, day.day);
+                return bookingsByDay[key] ?? [];
+              },
+              calendarStyle: CalendarStyle(
+                markerDecoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(0.4),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            /// 📋 LISTA DE RESERVAS DEL DÍA
+            Expanded(
+              child: selectedBookings.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No hay reservas para este día',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: selectedBookings.length,
+                      itemBuilder: (context, index) {
+                        return _BookingCard(
+                          booking: selectedBookings[index],
+                        );
+                      },
+                    ),
+            ),
+          ],
         );
       },
     );
