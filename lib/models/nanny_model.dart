@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class NannyModel {
   final String id;
   final String userId;
+  final String name;
   final int age;
   final List<String> services;
   final List<String> certifications;
@@ -23,6 +24,7 @@ class NannyModel {
   NannyModel({
     required this.id,
     required this.userId,
+    required this.name,
     required this.age,
     this.certifications = const [],
     required this.availability,
@@ -46,6 +48,7 @@ class NannyModel {
     return NannyModel(
       id: doc.id,
       userId: data['userId'] ?? '',
+      name: data['name'] ?? 'Niñera',
       age: data['age'] ?? 18,
       services: List<String>.from(data['services'] ?? []),
       certifications: List<String>.from(data['certifications'] ?? []),
@@ -71,6 +74,7 @@ class NannyModel {
     return {
       'userId': userId,
       'age': age,
+      'name': name,
       'certifications': certifications,
       'services': services,
       'availability': availability,
@@ -92,6 +96,7 @@ class NannyModel {
   NannyModel copyWith({
     String? userId,
     int? age,
+    String? name,
     List<String>? certifications,
     List<String>? services,
     Map<String, dynamic>? availability,
@@ -110,6 +115,7 @@ class NannyModel {
     return NannyModel(
       id: id,
       userId: userId ?? this.userId,
+      name: name ?? this.name,
       age: age ?? this.age,
       certifications: certifications ?? this.certifications,
       services: services ?? this.services,

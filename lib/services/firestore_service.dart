@@ -9,21 +9,25 @@ class FirestoreService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // CRUD para Nanny
-  Future<void> createNannyProfile(NannyModel nanny) async {
+  Future<void> createNannyProfile({
+    required NannyModel nanny,
+    required String fullName,
+  }) async {
     try {
-      await _firestore
-          .collection('nannies')
-          .doc(nanny.userId)
-          .set(nanny.toMap());
+      await _firestore.collection('nannies').doc(nanny.userId).set({
+        ...nanny.toMap(),
+        'name': fullName, 
+        'createdAt': FieldValue.serverTimestamp(),
+      });
     } catch (e) {
       throw Exception('Error al crear perfil de niñera: $e');
     }
   }
 
-  Future<NannyModel?> getNannyProfile(String userId) async {
+  Future<NannyModel?> getNannyProfile(String nannyId) async {
     try {
       DocumentSnapshot doc =
-          await _firestore.collection('nannies').doc(userId).get();
+          await _firestore.collection('nannies').doc(nannyId).get();
       if (doc.exists) {
         return NannyModel.fromFirestore(doc);
       }
@@ -96,19 +100,17 @@ class FirestoreService extends ChangeNotifier {
     bool isApproved = true,
     bool isAvailable = true,
   }) {
-    return _firestore.collection('nannies').snapshots().map((snapshot) {
-      final all =
-          snapshot.docs.map((doc) => NannyModel.fromFirestore(doc)).toList();
-
-      final filtered = all.where((nanny) {
-        return nanny.services.contains(service);
-      }).toList();
-
-      debugPrint('Niñeras totales: ${all.length}');
-      debugPrint('Niñeras con servicio $service: ${filtered.length}');
-
-      return filtered;
-    });
+    return _firestore
+        .collection('nannies')
+        .where('isApproved', isEqualTo: isApproved)
+        .where('isAvailable', isEqualTo: isAvailable)
+        .where('services', arrayContains: service)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => NannyModel.fromFirestore(doc))
+              .toList(),
+        );
   }
 
   Future<List<NannyModel>> searchNannies({
