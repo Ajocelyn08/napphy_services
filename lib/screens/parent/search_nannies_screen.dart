@@ -161,7 +161,7 @@ class _NannyCard extends StatelessWidget {
           Navigator.pushNamed(
             context,
             Routes.nannyDetail,
-            arguments: {'nannyId': nanny.userId},
+            arguments: {'nannyId': nanny.id},
           );
         },
         child: Padding(
