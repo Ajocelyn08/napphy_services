@@ -13,6 +13,7 @@ class BookingModel {
   final String id;
   final String parentId;
   final String nannyId;
+  final String nannyName;
   final DateTime startDate;
   final DateTime endDate;
   final String startTime;
@@ -32,6 +33,7 @@ class BookingModel {
     required this.id,
     required this.parentId,
     required this.nannyId,
+    required this.nannyName,
     required this.startDate,
     required this.endDate,
     required this.startTime,
@@ -53,6 +55,7 @@ class BookingModel {
     return BookingModel(
       id: doc.id,
       parentId: data['parentId'] ?? '',
+      nannyName: data['nannyName'] ?? '',
       nannyId: data['nannyId'] ?? '',
       startDate: (data['startDate'] as Timestamp).toDate(),
       endDate: (data['endDate'] as Timestamp).toDate(),
@@ -82,6 +85,7 @@ class BookingModel {
     return {
       'parentId': parentId,
       'nannyId': nannyId,
+      'nannyName': nannyName,
       'startDate': Timestamp.fromDate(startDate),
       'endDate': Timestamp.fromDate(endDate),
       'startTime': startTime,
@@ -121,6 +125,7 @@ class BookingModel {
       id: id,
       parentId: parentId ?? this.parentId,
       nannyId: nannyId ?? this.nannyId,
+      nannyName: nannyName ?? this.nannyName,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       startTime: startTime ?? this.startTime,

@@ -46,28 +46,24 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _ensureUserDoc(User user, {String? fullName, UserRole? role}) async {
+  Future<void> _ensureUserDoc(User user,
+      {String? fullName, UserRole? role}) async {
     try {
       final ref = _firestore.collection('users').doc(user.uid);
       final snap = await ref.get();
-      final fallbackName = fullName ?? user.displayName ?? (user.email ?? '').split('@').first;
-
-      final base = <String, dynamic>{
-        'id': user.uid,
-        'email': user.email ?? '',
-        'fullName': fallbackName,
-        'updatedAt': Timestamp.now(),
-      };
-      if (role != null) base['role'] = role.name;
 
       if (!snap.exists) {
         await ref.set({
-          ...base,
-          'createdAt': Timestamp.now(),
+          'id': user.uid,
+          'email': user.email ?? '',
+          'fullName': fullName ??
+              user.displayName ??
+              (user.email ?? '').split('@').first,
+          'role': role?.name,
           'photoUrl': null,
+          'createdAt': Timestamp.now(),
+          'updatedAt': Timestamp.now(),
         });
-      } else {
-        await ref.update(base);
       }
     } catch (e) {
       debugPrint('Error en _ensureUserDoc: $e');
@@ -91,7 +87,8 @@ class AuthService extends ChangeNotifier {
         password: password,
       );
 
-      final userName = fullName.trim().isEmpty ? email.split('@').first : fullName.trim();
+      final userName =
+          fullName.trim().isEmpty ? email.split('@').first : fullName.trim();
 
       // Crea documento de usuario en Firestore
       await _firestore.collection('users').doc(cred.user!.uid).set({
@@ -106,6 +103,7 @@ class AuthService extends ChangeNotifier {
 
       // Actualiza displayName en Firebase Auth
       await cred.user!.updateDisplayName(userName);
+      await cred.user!.reload();
 
       await loadUserData(cred.user!.uid);
 
@@ -216,7 +214,10 @@ class AuthService extends ChangeNotifier {
       if (photoUrl != null) updates['photoUrl'] = photoUrl;
       updates['updatedAt'] = Timestamp.now();
 
-      await _firestore.collection('users').doc(currentUser!.uid).update(updates);
+      await _firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .update(updates);
 
       await loadUserData(currentUser!.uid);
     } catch (e) {

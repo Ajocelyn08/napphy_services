@@ -28,11 +28,6 @@ class _SearchNanniesScreenState extends State<SearchNanniesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
-    selectedService = args?['service'];
-
     final firestoreService = Provider.of<FirestoreService>(context);
 
     return Scaffold(
@@ -166,7 +161,7 @@ class _NannyCard extends StatelessWidget {
           Navigator.pushNamed(
             context,
             Routes.nannyDetail,
-            arguments: {'nannyId': nanny.userId},
+            arguments: {'nannyId': nanny.id},
           );
         },
         child: Padding(
@@ -196,7 +191,7 @@ class _NannyCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            'Niñera #${nanny.id.substring(0, 6)}',
+                            nanny.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -270,7 +265,7 @@ class _NannyCard extends StatelessWidget {
                             Navigator.pushNamed(
                               context,
                               Routes.nannyDetail,
-                              arguments: {'nannyId': nanny.userId},
+                              arguments: {'nannyId': nanny.id},
                             );
                           },
                           child: const Text('Ver perfil'),
